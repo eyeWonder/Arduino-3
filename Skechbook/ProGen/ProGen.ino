@@ -33,7 +33,7 @@ char aVocal[] = { 'A', 'E', 'I', 'O', 'U' };
 char aConsonant[] = { 'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'};
 char aEnd[] = { 'L', 'N', 'M', 'R', 'S', 'T' };
 
-#define MIN_LEN 3
+#define MIN_LEN 2
 #define MAX_LEN 6
 
 String proGen() {
@@ -42,35 +42,45 @@ String proGen() {
   
   randomSeed(0);
 
+  if (len>2) {
     pro += String(aConsonant[random(0,sizeof(aConsonant))]);
-  for (int iPos=1;iPos<(len-1);iPos++) {
-    if (len>3) {
-      if (len%2==0) {  // even 
-       if (iPos%2==0) { // even
-          pro += String(aVocal[random(0,sizeof(aVocal))]);
+    for (int iPos=1;iPos<(len-1);iPos++) {
+      if (len>3) {
+        if (len%2==0) {  // even 
+         if (iPos%2==0) { // even
+            pro += String(aVocal[random(0,sizeof(aVocal))]);
+          } else { // odd
+            if (random(0,1)==0) {
+              pro += String(aConsonant[random(0,sizeof(aConsonant))]);
+            } else {
+              pro += String(aVocal[random(0,sizeof(aVocal))]);
+            }
+         }
         } else { // odd
-          if (random(0,1)==0) {
-            pro += String(aConsonant[random(0,sizeof(aConsonant))]);
-          } else {
+          if (iPos%2==0) { // even
+            if (random(0,1)==0) {
+              pro += String(aConsonant[random(0,sizeof(aConsonant))]);
+            } else {
+              pro += String(aVocal[random(0,sizeof(aVocal))]);
+            }
+          } else { // odd
             pro += String(aVocal[random(0,sizeof(aVocal))]);
           }
-       }
-      } else { // odd
-        if (iPos%2==0) { // even
-          if (random(0,1)==0) {
-            pro += String(aConsonant[random(0,sizeof(aConsonant))]);
-          } else {
-            pro += String(aVocal[random(0,sizeof(aVocal))]);
-          }
-        } else { // odd
-          pro += String(aVocal[random(0,sizeof(aVocal))]);
         }
+      } else {
+        pro += String(aVocal[random(0,sizeof(aVocal))]);
       }
+    }
+    pro += String(aEnd[random(0,sizeof(aEnd))]);
+  } else {
+    if (random(0,1)==0) {
+      pro += String(aConsonant[random(0,sizeof(aConsonant))]);
+      pro += String(aVocal[random(0,sizeof(aVocal))]);
     } else {
       pro += String(aVocal[random(0,sizeof(aVocal))]);
+      pro += String(aConsonant[random(0,sizeof(aConsonant))]);
     }
   }
-  pro += String(aEnd[random(0,sizeof(aEnd))]);
 
   Serial.println(pro);
   return pro;
